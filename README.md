@@ -1,2 +1,2 @@
 # router
-A simple object oriented PHP Router
+Not Request, Not Response, only a simple object oriented PHP route resolver
