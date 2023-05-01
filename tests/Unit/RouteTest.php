@@ -2,10 +2,10 @@
 
 require_once __DIR__ . "/../Foo.php";
 
-use Esiteks\Router\Classes\Path;
-use Esiteks\Router\Classes\Route;
-use Esiteks\Router\Exceptions\NotValidCallbackException;
-use Esiteks\Router\Exceptions\NotValidMethodException;
+use Esiteks\Resolver\Classes\Path;
+use Esiteks\Resolver\Classes\Route;
+use Esiteks\Resolver\Exceptions\NotValidCallbackException;
+use Esiteks\Resolver\Exceptions\NotValidMethodException;
 
 use PHPUnit\Framework\TestCase;
 

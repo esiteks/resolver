@@ -1,16 +1,16 @@
 <?php 
 declare(strict_types=1);
 
-namespace Esiteks\Router;
+namespace Esiteks\Resolver;
 
 use Closure;
 
-use Esiteks\Router\Classes\Route;
-use Esiteks\Router\Classes\Path;
-use Esiteks\Router\Exceptions\NotExistsRouteException;
-use Esiteks\Router\Exceptions\NotFoundException;
+use Esiteks\Resolver\Classes\Route;
+use Esiteks\Resolver\Classes\Path;
+use Esiteks\Resolver\Exceptions\NotExistsRouteException;
+use Esiteks\Resolver\Exceptions\NotFoundException;
 
-class Router{
+class Resolver{
 
     protected array $routes = [];    
 

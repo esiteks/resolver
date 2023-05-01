@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Esiteks\Router\Interfaces;
+namespace Esiteks\Resolver\Interfaces;
 
 interface PathInterface {
 

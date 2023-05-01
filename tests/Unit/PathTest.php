@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use Esiteks\Router\Classes\Path;
+use Esiteks\Resolver\Classes\Path;
 use PHPUnit\Framework\TestCase;
 
 final class PathTest extends TestCase{

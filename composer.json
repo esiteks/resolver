@@ -1,11 +1,11 @@
 {
-    "name": "esiteks/router",
+    "name": "esiteks/route-resolver",
     "description": "No Request, No Response, only a simple object oriented PHP route resolver",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Esiteks\\Router\\": "src/"
+            "Esiteks\\Resolver\\": "src/"
         }
     },
     "authors": [

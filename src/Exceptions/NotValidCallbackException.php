@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Esiteks\Router\Exceptions;
+namespace Esiteks\Resolver\Exceptions;
 
 use Exception;
 

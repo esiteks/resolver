@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Esiteks\Router\Classes;
+namespace Esiteks\Resolver\Classes;
 
-use Esiteks\Router\Interfaces\PathInterface;
+use Esiteks\REsolver\Interfaces\PathInterface;
 
 class Path implements PathInterface{
     protected string $uri;

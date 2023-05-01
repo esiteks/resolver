@@ -2,18 +2,18 @@
 
 require_once __DIR__ . "/../Foo.php";
 
-use Esiteks\Router\Router;
-use Esiteks\Router\Classes\Route;
-use Esiteks\Router\Exceptions\NotExistsRouteException;
-use Esiteks\Router\Exceptions\NotFoundException;
+use Esiteks\Resolver\Resolver;
+use Esiteks\Resolver\Classes\Route;
+use Esiteks\Resolver\Exceptions\NotExistsRouteException;
+use Esiteks\Resolver\Exceptions\NotFoundException;
 use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase{
 
-    protected Router $router;
+    protected Resolver $router;
 
     protected function setUp() : void{
-        $this->router = new Router;
+        $this->router = new Resolver;
     }
 
     /**
@@ -150,7 +150,7 @@ final class RouterTest extends TestCase{
     }
 
     private function createRoutes(string $method) : mixed{
-        $r = new Router();
+        $r = new Resolver();
 
         /*
         ---FOO CLASS---

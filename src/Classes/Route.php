@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Esiteks\Router\Classes;
+namespace Esiteks\Resolver\Classes;
 
-use Esiteks\Router\Classes\Path;
-use Esiteks\Router\Exceptions\NotValidCallbackException;
-use Esiteks\Router\Exceptions\NotValidMethodException;
-use Esiteks\Router\Interfaces\PathInterface;
-use Esiteks\Router\Interfaces\RouteInterface;
+use Esiteks\Resolver\Classes\Path;
+use Esiteks\Resolver\Exceptions\NotValidCallbackException;
+use Esiteks\Resolver\Exceptions\NotValidMethodException;
+use Esiteks\Resolver\Interfaces\PathInterface;
+use Esiteks\Resolver\Interfaces\RouteInterface;
 
 final class Route implements RouteInterface  {
     protected $name;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Esiteks\Router\Exceptions;
+namespace Esiteks\Resolver\Exceptions;
 
 use Exception;
 
