@@ -4,7 +4,7 @@ namespace Esiteks\Resolver\Classes;
 
 use Esiteks\Contracts\Resolver\ResolveInterface;
 
-class Resolve implements ResolveInterface{
+class ResolverResult implements ResolveInterface{
 
     public function __construct(
         protected mixed $callback,

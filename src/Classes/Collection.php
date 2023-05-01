@@ -1,31 +1,32 @@
-<?php 
-declare(strict_types=1);
+<?php
 
-namespace Esiteks\Resolver;
+namespace Esiteks\Resolver\Classes;
 
-use Esiteks\Resolver\Classes\Route;
-use Esiteks\Resolver\Classes\Path;
-use Esiteks\Resolver\Classes\Resolve;
-
-use Esiteks\Resolver\Exceptions\NotExistsRouteException;
-use Esiteks\Resolver\Exceptions\NotResolveException;
-
-use Esiteks\Contracts\Resolver\ResolveInterface;
+use Esiteks\Contracts\Resolver\RouteCollectionInterface;
 use Esiteks\Contracts\Resolver\RouteInterface;
-use Esiteks\Contracts\Resolver\RouteResolverInterface;
+use Esiteks\Resolver\Exceptions\NotExistsRouteException;
 
-class RouteResolver implements RouteResolverInterface{
+class Collection implements RouteCollectionInterface{    
+    protected array $routes;
 
-    public function __construct(
-        public readonly string $prefix = "",
-        protected array $routes = []
-    ){}
+    public function __construct(  
+        Collection $routes = null,
+        public readonly string $prefix = "",        
+    ){
+        if( is_null( $routes ) )
+            $this->routes = [];
+        else{
+            $this->routes = [...$this->routes, ...$routes->getRoutes()];
+        }
+    }
+
+    public function insertRoute(RouteInterface $route) : RouteInterface{   
+        $this->routes[] = $route;
+        return $route;
+    }
 
     public function add(string $uri, string $method, mixed $callback ) : RouteInterface{      
-
-        $returnRoute = new Route($this->prefix, $uri, $method, $callback);
-        $this->routes[] = $returnRoute;
-        return $returnRoute;
+        return $this->insertRoute( new Route($this->prefix, $uri, $method, $callback) );        
     }
 
     public function get($uri, $callback) : RouteInterface{
@@ -56,8 +57,7 @@ class RouteResolver implements RouteResolverInterface{
         return $this->add($uri, 'head', $callback);
     }
 
-    public function getUri($name, $params = [] ) : string{        
-        if( empty( $this->routes ) ) return '';
+    public function getUri($name, $params = [] ) : string{    
         foreach( $this->routes as $route ){
             $_name = $route->getName();
             if( $_name == $name ){
@@ -67,7 +67,7 @@ class RouteResolver implements RouteResolverInterface{
                     return $route->getUri();
             }
         }
-        return '';
+        throw new NotExistsRouteException();
     }
 
     public function getUris($params = []) : array{
@@ -91,9 +91,6 @@ class RouteResolver implements RouteResolverInterface{
     }
 
     public function getRoute( $name ) : RouteInterface{        
-        if( empty( $this->routes ) ) 
-            return throw new NotExistsRouteException;
-
         foreach( $this->routes as $route ){
             if( $route->getName() == $name )
                 return $route;            
@@ -104,30 +101,5 @@ class RouteResolver implements RouteResolverInterface{
 
     public function getRoutes() : array{
         return $this->routes;
-    }
-
-    public function resolve( string $requestUri, string $method) : ResolveInterface {        
-        if( empty( $this->routes ) ) throw new NotResolveException();      
-
-        $method = trim( strtoupper( $method ) );   
-            
-        $path = new Path( $requestUri );        
-        
-        foreach( $this->routes as $route ){ 
-            if( $route->getMethod() != $method )
-                continue;
-            
-            if( $route->getUri() == $path->getUri() ){   
-                return new Resolve($route->getCallback());             
-            }else{
-                $matchArgs = $route->matchAndGetArgs( $path );
-                if( !is_array( $matchArgs ) ) continue; 
-
-                return new Resolve( $route->getCallback(), $matchArgs);                
-            }
-            
-        }
-
-        throw new NotREsolveException();
     }
 }

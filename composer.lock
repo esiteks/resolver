@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/esiteks/resolver-contracts.git",
-                "reference": "ae77f98ce14d7be984f808a89606b683ec689e71"
+                "reference": "e535b2e2e7e846e6bdb615fc718b87faa291b9c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/esiteks/resolver-contracts/zipball/ae77f98ce14d7be984f808a89606b683ec689e71",
-                "reference": "ae77f98ce14d7be984f808a89606b683ec689e71",
+                "url": "https://api.github.com/repos/esiteks/resolver-contracts/zipball/e535b2e2e7e846e6bdb615fc718b87faa291b9c8",
+                "reference": "e535b2e2e7e846e6bdb615fc718b87faa291b9c8",
                 "shasum": ""
             },
             "default-branch": true,
@@ -40,7 +40,7 @@
                 "issues": "https://github.com/esiteks/resolver-contracts/issues",
                 "source": "https://github.com/esiteks/resolver-contracts/tree/main"
             },
-            "time": "2023-05-01T20:27:57+00:00"
+            "time": "2023-05-01T21:49:08+00:00"
         }
     ],
     "packages-dev": [
@@ -615,12 +615,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "833302ab1daf9721bb13d76f71685075b8f8d1ee"
+                "reference": "e132b0c267cfe6504811239b8a9ecd44ca029781"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/833302ab1daf9721bb13d76f71685075b8f8d1ee",
-                "reference": "833302ab1daf9721bb13d76f71685075b8f8d1ee",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e132b0c267cfe6504811239b8a9ecd44ca029781",
+                "reference": "e132b0c267cfe6504811239b8a9ecd44ca029781",
                 "shasum": ""
             },
             "require": {
@@ -709,7 +709,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-22T07:39:08+00:00"
+            "time": "2023-04-30T05:07:05+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -1027,12 +1027,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "7e53eb5309d8748956d3aaf8a9e20cf211260817"
+                "reference": "912dc2fbe3e3c1e7873313cc801b100b6c68c87b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/7e53eb5309d8748956d3aaf8a9e20cf211260817",
-                "reference": "7e53eb5309d8748956d3aaf8a9e20cf211260817",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/912dc2fbe3e3c1e7873313cc801b100b6c68c87b",
+                "reference": "912dc2fbe3e3c1e7873313cc801b100b6c68c87b",
                 "shasum": ""
             },
             "require": {
@@ -1079,7 +1079,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/diff/issues",
                 "security": "https://github.com/sebastianbergmann/diff/security/policy",
-                "source": "https://github.com/sebastianbergmann/diff/tree/main"
+                "source": "https://github.com/sebastianbergmann/diff/tree/5.0.3"
             },
             "funding": [
                 {
@@ -1087,7 +1087,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-04-04T09:34:52+00:00"
+            "time": "2023-05-01T07:48:21+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -1702,7 +1702,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "esiteks/resolver-contracts": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
