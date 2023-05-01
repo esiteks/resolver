@@ -16,46 +16,44 @@ use Esiteks\Contracts\Resolver\RouteResolverInterface;
 
 class RouteResolver implements RouteResolverInterface{
 
-    protected array $routes = [];    
-
     public function __construct(
-        public readonly string $prefix = ""
+        public readonly string $prefix = "",
+        protected array $routes = []
     ){}
 
     public function add(string $uri, string $method, mixed $callback ) : RouteInterface{      
 
         $returnRoute = new Route($this->prefix, $uri, $method, $callback);
-		$this->routes[] = $returnRoute;   
-
+        $this->routes[] = $returnRoute;
         return $returnRoute;
     }
 
     public function get($uri, $callback) : RouteInterface{
-        return self::add( $uri, 'get', $callback );
+        return $this->add( $uri, 'get', $callback );
     }
 
     public function post($uri, $callback) : RouteInterface{
-        return self::add( $uri, 'post', $callback );
+        return $this->add( $uri, 'post', $callback );
     }
 
     public function put($uri, $callback) : RouteInterface{
-        return self::add($uri, 'put', $callback);
+        return $this->add($uri, 'put', $callback);
     }
 
     public function patch($uri, $callback) : RouteInterface{
-        return self::add($uri, 'patch', $callback);
+        return $this->add($uri, 'patch', $callback);
     }
 
     public function delete($uri, $callback) : RouteInterface{
-        return self::add($uri, 'delete', $callback);
+        return $this->add($uri, 'delete', $callback);
     }
 
     public function options($uri, $callback) : RouteInterface{
-        return self::add($uri, 'options', $callback);
+        return $this->add($uri, 'options', $callback);
     }
 
     public function head($uri, $callback) : RouteInterface{
-        return self::add($uri, 'head', $callback);
+        return $this->add($uri, 'head', $callback);
     }
 
     public function getUri($name, $params = [] ) : string{        
