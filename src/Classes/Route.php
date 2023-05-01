@@ -25,8 +25,7 @@ final class Route implements RouteInterface  {
         "HEAD"
     ];
 
-    public function __construct(string $prefix, string $uri, string $method , mixed $callback){        
-        //if( empty( $method ) || empty( $callback ) ) throw new MethodCallbackRequiredException();        
+    public function __construct(string $prefix, string $uri, string $method , mixed $callback){                
         if( !$this->checkCallback( $callback ) ) throw new NotValidCallbackException();
 
         if( !in_array( strtoupper( trim( $method ) ), Route::METHODS ) )
