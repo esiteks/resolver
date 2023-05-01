@@ -1,6 +1,6 @@
 {
     "name": "esiteks/router",
-    "description": "A simple object oriented PHP Router",
+    "description": "No Request, No Response, only a simple object oriented PHP route resolver",
     "type": "library",
     "license": "MIT",
     "autoload": {
