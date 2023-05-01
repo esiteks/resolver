@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Esiteks\Resolver\Classes;
 
-use Esiteks\REsolver\Interfaces\PathInterface;
+use Esiteks\Contracts\Resolver\PathInterface;
 
 class Path implements PathInterface{
     protected string $uri;

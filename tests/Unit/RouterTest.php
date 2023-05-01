@@ -2,18 +2,22 @@
 
 require_once __DIR__ . "/../Foo.php";
 
-use Esiteks\Resolver\Resolver;
+use Esiteks\Resolver\RouteResolver;
+
+use Esiteks\Resolver\Classes\Resolve;
 use Esiteks\Resolver\Classes\Route;
+
 use Esiteks\Resolver\Exceptions\NotExistsRouteException;
-use Esiteks\Resolver\Exceptions\NotFoundException;
+use Esiteks\Resolver\Exceptions\NotResolveException;
+
 use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase{
 
-    protected Resolver $router;
+    protected RouteResolver $router;
 
     protected function setUp() : void{
-        $this->router = new Resolver;
+        $this->router = new RouteResolver;
     }
 
     /**
@@ -149,8 +153,18 @@ final class RouterTest extends TestCase{
         $this->assertEquals('foo', $_routes[1]->getName());
     }
 
+    /**
+     * @test
+     * @testdox Get a Resolve Intance
+     */
+    public function ResolveIntance() : void {
+        $this->router->get('/', function(){});
+
+        $this->assertInstanceOf(Resolve::class, $this->router->resolve('/', 'get'));
+    }
+
     private function createRoutes(string $method) : mixed{
-        $r = new Resolver();
+        $r = new RouteResolver();
 
         /*
         ---FOO CLASS---
@@ -172,6 +186,21 @@ final class RouterTest extends TestCase{
         return $r;
     }
 
+    
+
+    private function getContentFromCallback( $callback,  $matchArgs = [] ) : mixed{
+        $content = null;
+
+        if( is_a( $callback, Closure::class ) ){
+            $content = call_user_func_array($callback, $matchArgs );
+        }else if( is_array( $callback ) && count( $callback ) == 2 ){
+            $rf = new \ReflectionMethod( $callback[0], $callback[1] );
+            $content = $rf->invokeArgs(new $callback[0], $matchArgs ); 
+        }
+
+        return $content;
+    }
+
     /**
      * @test
      * @testdox Resolve get uri
@@ -180,8 +209,14 @@ final class RouterTest extends TestCase{
         $m = 'get';
         $r = $this->createRoutes($m);
 
-        $this->assertEquals('index', $r->resolve('/',$m));
-        $this->assertEquals('bar', $r->resolve('/foo/bar', $m));        
+        $u1 = $r->resolve('/',$m);
+        $u2 = $r->resolve('/foo/bar', $m);
+
+        $c1 = $this->getContentFromCallback($u1->getCallback());
+        $c2 = $this->getContentFromCallback($u2->getCallback(), $u2->getArgs());
+
+        $this->assertEquals('index', $c1);
+        $this->assertEquals('bar', $c2);        
     }
 
     /**
@@ -192,8 +227,14 @@ final class RouterTest extends TestCase{
         $m = 'post';
         $r = $this->createRoutes($m);
 
-        $this->assertEquals('index', $r->resolve('/',$m));
-        $this->assertEquals('bar', $r->resolve('/foo/bar', $m));         
+        $u1 = $r->resolve('/',$m);
+        $u2 = $r->resolve('/foo/bar', $m);
+
+        $c1 = $this->getContentFromCallback($u1->getCallback());
+        $c2 = $this->getContentFromCallback($u2->getCallback(), $u2->getArgs());
+
+        $this->assertEquals('index', $c1);
+        $this->assertEquals('bar', $c2);         
     }
 
     /**
@@ -204,8 +245,14 @@ final class RouterTest extends TestCase{
         $m = 'put';
         $r = $this->createRoutes($m);
 
-        $this->assertEquals('index', $r->resolve('/',$m));
-        $this->assertEquals('bar', $r->resolve('/foo/bar', $m));       
+        $u1 = $r->resolve('/',$m);
+        $u2 = $r->resolve('/foo/bar', $m);
+
+        $c1 = $this->getContentFromCallback($u1->getCallback());
+        $c2 = $this->getContentFromCallback($u2->getCallback(), $u2->getArgs());
+
+        $this->assertEquals('index', $c1);
+        $this->assertEquals('bar', $c2);       
     }
 
     /**
@@ -216,8 +263,14 @@ final class RouterTest extends TestCase{
         $m = 'patch';
         $r = $this->createRoutes($m);
 
-        $this->assertEquals('index', $r->resolve('/',$m));
-        $this->assertEquals('bar', $r->resolve('/foo/bar', $m));       
+        $u1 = $r->resolve('/',$m);
+        $u2 = $r->resolve('/foo/bar', $m);
+
+        $c1 = $this->getContentFromCallback($u1->getCallback());
+        $c2 = $this->getContentFromCallback($u2->getCallback(), $u2->getArgs());
+
+        $this->assertEquals('index', $c1);
+        $this->assertEquals('bar', $c2);       
     }
 
     /**
@@ -228,8 +281,14 @@ final class RouterTest extends TestCase{
         $m = 'delete';
         $r = $this->createRoutes($m);
 
-        $this->assertEquals('index', $r->resolve('/',$m));
-        $this->assertEquals('bar', $r->resolve('/foo/bar', $m));         
+        $u1 = $r->resolve('/',$m);
+        $u2 = $r->resolve('/foo/bar', $m);
+
+        $c1 = $this->getContentFromCallback($u1->getCallback());
+        $c2 = $this->getContentFromCallback($u2->getCallback(), $u2->getArgs());
+
+        $this->assertEquals('index', $c1);
+        $this->assertEquals('bar', $c2);         
     }
 
     /**
@@ -240,8 +299,14 @@ final class RouterTest extends TestCase{
         $m = 'options';
         $r = $this->createRoutes($m);
 
-        $this->assertEquals('index', $r->resolve('/',$m));
-        $this->assertEquals('bar', $r->resolve('/foo/bar', $m));         
+        $u1 = $r->resolve('/',$m);
+        $u2 = $r->resolve('/foo/bar', $m);
+
+        $c1 = $this->getContentFromCallback($u1->getCallback());
+        $c2 = $this->getContentFromCallback($u2->getCallback(), $u2->getArgs());
+
+        $this->assertEquals('index', $c1);
+        $this->assertEquals('bar', $c2);        
     }
 
     /**
@@ -252,16 +317,22 @@ final class RouterTest extends TestCase{
         $m = 'head';
         $r = $this->createRoutes($m);
 
-        $this->assertEquals('index', $r->resolve('/',$m));
-        $this->assertEquals('bar', $r->resolve('/foo/bar', $m));       
+        $u1 = $r->resolve('/',$m);
+        $u2 = $r->resolve('/foo/bar', $m);
+
+        $c1 = $this->getContentFromCallback($u1->getCallback());
+        $c2 = $this->getContentFromCallback($u2->getCallback(), $u2->getArgs());
+
+        $this->assertEquals('index', $c1);
+        $this->assertEquals('bar', $c2);     
     }
 
     /**
      * @test
-     * @testdox Get NoFoundException
+     * @testdox Get NoResolveException
      */
     public function GetNotFound() : void{
-        $this->expectException(NotFoundException::class);
+        $this->expectException(NotResolveException::class);
         $this->router->post('/', function(){});
 
         $this->router->resolve('/', 'get');

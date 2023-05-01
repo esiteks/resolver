@@ -3,14 +3,18 @@ declare(strict_types=1);
 
 namespace Esiteks\Resolver;
 
-use Closure;
-
 use Esiteks\Resolver\Classes\Route;
 use Esiteks\Resolver\Classes\Path;
-use Esiteks\Resolver\Exceptions\NotExistsRouteException;
-use Esiteks\Resolver\Exceptions\NotFoundException;
+use Esiteks\Resolver\Classes\Resolve;
 
-class Resolver{
+use Esiteks\Resolver\Exceptions\NotExistsRouteException;
+use Esiteks\Resolver\Exceptions\NotResolveException;
+
+use Esiteks\Contracts\Resolver\ResolveInterface;
+use Esiteks\Contracts\Resolver\RouteInterface;
+use Esiteks\Contracts\Resolver\RouteResolverInterface;
+
+class RouteResolver implements RouteResolverInterface{
 
     protected array $routes = [];    
 
@@ -18,7 +22,7 @@ class Resolver{
         public readonly string $prefix = ""
     ){}
 
-    public function add(string $uri, string $method, mixed $callback ) : Route{      
+    public function add(string $uri, string $method, mixed $callback ) : RouteInterface{      
 
         $returnRoute = new Route($this->prefix, $uri, $method, $callback);
 		$this->routes[] = $returnRoute;   
@@ -26,31 +30,31 @@ class Resolver{
         return $returnRoute;
     }
 
-    public function get($uri, $callback) : Route{
+    public function get($uri, $callback) : RouteInterface{
         return self::add( $uri, 'get', $callback );
     }
 
-    public function post($uri, $callback) : Route{
+    public function post($uri, $callback) : RouteInterface{
         return self::add( $uri, 'post', $callback );
     }
 
-    public function put($uri, $callback) : Route{
+    public function put($uri, $callback) : RouteInterface{
         return self::add($uri, 'put', $callback);
     }
 
-    public function patch($uri, $callback) : Route{
+    public function patch($uri, $callback) : RouteInterface{
         return self::add($uri, 'patch', $callback);
     }
 
-    public function delete($uri, $callback) : Route{
+    public function delete($uri, $callback) : RouteInterface{
         return self::add($uri, 'delete', $callback);
     }
 
-    public function options($uri, $callback) : Route{
+    public function options($uri, $callback) : RouteInterface{
         return self::add($uri, 'options', $callback);
     }
 
-    public function head($uri, $callback) : Route{
+    public function head($uri, $callback) : RouteInterface{
         return self::add($uri, 'head', $callback);
     }
 
@@ -88,7 +92,7 @@ class Resolver{
         return $names;
     }
 
-    public function getRoute( $name ) : Route{        
+    public function getRoute( $name ) : RouteInterface{        
         if( empty( $this->routes ) ) 
             return throw new NotExistsRouteException;
 
@@ -104,8 +108,8 @@ class Resolver{
         return $this->routes;
     }
 
-    public function resolve( string $requestUri, string $method) : mixed {        
-        if( empty( $this->routes ) ) throw new NotFoundException();      
+    public function resolve( string $requestUri, string $method) : ResolveInterface {        
+        if( empty( $this->routes ) ) throw new NotResolveException();      
 
         $method = trim( strtoupper( $method ) );   
             
@@ -115,30 +119,17 @@ class Resolver{
             if( $route->getMethod() != $method )
                 continue;
             
-            if( $route->getUri() == $path->getUri() ){                
-                return self::getContentFromCallback( $route->getCallback() );                                
+            if( $route->getUri() == $path->getUri() ){   
+                return new Resolve($route->getCallback());             
             }else{
                 $matchArgs = $route->matchAndGetArgs( $path );
                 if( !is_array( $matchArgs ) ) continue; 
 
-                return self::getContentFromCallback( $route->getCallback(), $matchArgs );
+                return new Resolve( $route->getCallback(), $matchArgs);                
             }
             
         }
 
-        throw new NotFoundException();
-    }
-
-    protected function getContentFromCallback( $callback,  $matchArgs = [] ) : mixed{
-        $content = null;
-
-        if( is_a( $callback, Closure::class ) ){
-            $content = call_user_func_array($callback, $matchArgs );
-        }else if( is_array( $callback ) && count( $callback ) == 2 ){
-            $rf = new \ReflectionMethod( $callback[0], $callback[1] );
-            $content = $rf->invokeArgs(new $callback[0], $matchArgs ); 
-        }
-
-        return $content;
+        throw new NotREsolveException();
     }
 }

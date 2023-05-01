@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace Esiteks\Resolver\Classes;
 
+use Esiteks\Contracts\Resolver\PathInterface;
+use Esiteks\Contracts\Resolver\RouteInterface;
+
 use Esiteks\Resolver\Classes\Path;
+
 use Esiteks\Resolver\Exceptions\NotValidCallbackException;
 use Esiteks\Resolver\Exceptions\NotValidMethodException;
-use Esiteks\Resolver\Interfaces\PathInterface;
-use Esiteks\Resolver\Interfaces\RouteInterface;
 
-final class Route implements RouteInterface  {
+final class Route implements RouteInterface {
     protected $name;
     protected Path $path;
     protected $method;
